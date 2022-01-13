@@ -1,0 +1,51 @@
+<!--      /* LEFT-SIDEBAR */-->
+<div class="nav-side-menu" style="background-image: url(https://hoaidoan.vn/wp-content/uploads/2021/03/background-dep-5.png); background-size: cover">
+  <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+  <div class="menu-list">
+    <ul id="menu-content" class="menu-content collapse out">
+      <li data-toggle="collapse" data-target="#system" class="collapsed">
+        <a><i class="fas fa-assistive-listening-systems"></i> Hệ thống <span class="arrow"></span></a>
+      </li>
+      <ul class="sub-menu collapse" id="system">
+        <li><a routerLink="/auth/register">Tạo tài khoản</a></li>
+        <li><a routerLink="/employee/change-password/{{id}}">Đổi mật khẩu</a></li>
+        <li><a routerLink="/system/maintenance">Ngôn ngữ</a></li>
+      </ul>
+      <li data-toggle="collapse" data-target="#category" class="collapsed">
+        <a><i class="fas fa-toolbox"></i> Danh mục <span class="arrow"></span></a>
+      </li>
+      <ul class="sub-menu collapse" id="category">
+        <li data-toggle="collapse" data-target="#information" class="collapsed">
+          <a><i class="fas fa-info"></i> Quản lý thông tin <span class="arrow"></span></a>
+        </li>
+        <ul class="sub-menu collapse" id="information">
+          <li><a routerLink="/employee/list">Thông tin nhân viên</a></li>
+          <li><a routerLink="/system/maintenance">Thông tin khách hàng</a></li>
+          <li><a routerLink="/supplies/list">Thông tin vật tư</a></li>
+        </ul>
+        <li data-toggle="collapse" data-target="#warehouse" class="collapsed">
+          <a><i class="fas fa-warehouse"></i> Quản lý kho <span class="arrow"></span></a>
+        </li>
+        <ul class="sub-menu collapse" id="warehouse">
+          <li><a routerLink="/system/maintenance">Nhập kho</a></li>
+          <li><a routerLink="/system/maintenance">Xuất kho</a></li>
+        </ul>
+        <li data-toggle="collapse" data-target="#salary" class="collapsed">
+          <a routerLink="/system/maintenance"><i class="fas fa-money-check-alt"></i> Quản lý lương <span class="arrow"></span></a>
+        </li>
+      </ul>
+      <li data-toggle="collapse" data-target="#statistical" class="collapsed">
+        <a><i class="fas fa-toolbox"></i> Thống kê <span class="arrow"></span></a>
+      </li>
+      <ul class="sub-menu collapse" id="statistical">
+        <li><a routerLink="/stats/financial">Tài chính</a></li>
+        <li><a routerLink="/stats/supplies-stats">Vật tư</a></li>
+        <li><a routerLink="/stats/potential-customer">Khách hàng tiềm năng</a></li>
+      </ul>
+      <li data-toggle="collapse" data-target="#support" class="collapsed">
+        <a routerLink="/system/maintenance"><i class="fas fa-question"></i> Trợ giúp <span class="arrow"></span></a>
+      </li>
+    </ul>
+  </div>
+</div>
+

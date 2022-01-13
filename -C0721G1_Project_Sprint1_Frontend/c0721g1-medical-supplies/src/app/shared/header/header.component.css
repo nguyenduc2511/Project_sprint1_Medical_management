@@ -1,0 +1,50 @@
+body {
+  font-family: "Lucida Grande";
+}
+
+* {
+  box-sizing: border-box;
+}
+/*NAVBAR HEADER CSS*/
+.navbar-header li:hover {
+  transform: scale(1.3);
+  transition: 0.7s;
+}
+.navbar-header li {
+  margin-right: 40px;
+}
+.nav li {
+  padding-right: 100px;
+}
+/*NAV INFOR BUTTON*/
+.navbar-navInfor li {
+  padding-right: 15px;
+}
+/* BUTTON TOGGLE*/
+.infor {
+  background-color: #46ACC2;
+  display: flex;
+  padding: 16px;
+  font-family: sans-serif;
+  color: white;
+}
+
+.infor_Link {
+  padding-right: 8px;
+}
+
+.infor_Items {
+  display: flex;
+}
+
+
+.infor_Link-toggle {
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  #logo{
+    margin-left: 40%;
+  }
+
+}

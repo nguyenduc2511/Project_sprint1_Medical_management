@@ -1,0 +1,179 @@
+<div class="container-fluid"
+     style="background-image: url(https://hoaidoan.vn/wp-content/uploads/2021/03/background-dep-5.png); background-size: cover; padding: 0">
+  <div class="row">
+    <div class="col-lg-2">
+      <app-left-side-bar></app-left-side-bar>
+    </div>
+    <div class="col-lg-10" style="padding-left: 0">
+      <nav class="navbar navbar-light">
+        <a class="btn">
+          <button class="btn btn-success " style="background: #058af0" routerLink="/supplies/create">Thêm mới vật tư Y
+            Tế
+          </button>
+        </a>
+        <form class="form-inline" [formGroup]="searchForm">
+          <input class="form-control mr-sm-2" type="search" placeholder="Mã vật tư"
+                 aria-label="Search" formControlName="code">
+          <input class="form-control mr-sm-2" type="search" placeholder="Tên vật tư"
+                 aria-label="Search" formControlName="name">
+          <select class="custom-select" aria-describedby="validationServer04Feedback" formControlName="suppliesType">
+            <option selected disabled value="">Loại vật tư</option>
+            <option *ngFor="let supType of suppliesTypeList" [ngValue]="supType.id">{{supType.name}}</option>
+          </select>
+          <button class="btn btn-success " style="background: #058af0; margin-left: 7px"
+                  type="submit" (click)="searchSupplies()">Tìm kiếm
+          </button>
+        </form>
+      </nav>
+      <h2 style="text-align: center">Thông tin vật tư</h2>
+
+      <table class="table table-hover table-striped">
+        <thead>
+        <tr class="table-primary text-center">
+          <th>#</th>
+          <th>Mã vật tư</th>
+          <th>Tên vật tư</th>
+          <th>Loại vật tư</th>
+          <th>Giá thành (VND)</th>
+          <th>Ngày sản xuất</th>
+          <th>Hạn sử dụng</th>
+          <th>Nhà cung cấp</th>
+          <th>Trạng thái</th>
+          <th>Sửa</th>
+          <th>Xoá</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let sup of suppliesList index as i" class="text-center">
+          <td>{{i + 1}}</td>
+          <td>{{sup.code}}</td>
+          <td [innerHTML]="sup.name | truncateText: 15" title="{{sup.name}}"></td>
+          <td>{{sup.suppliesType.name}}</td>
+          <td>{{sup.price | number}}</td>
+          <td>{{sup.production_date | date: 'dd-MM-yyyy'}}</td>
+          <td>{{sup.expiry_date | date: 'dd-MM-yyyy'}}</td>
+          <td [innerHTML]="sup.producer.name | truncateText: 15" title="{{sup.producer.name}}"></td>
+          <td>
+            <button style="width: 100%; text-align: center" class="badge badge-warning  " *ngIf="sup.status==1" title="Vật tư mới">VT mới
+            </button>
+            <button style="width: 100%; text-align: center" class="badge badge-info " *ngIf="sup.status==0" title="Vật tư cũ">VT cũ
+            </button>
+          </td>
+          <td style="text-align: center">
+            <button class=" btn-edit btn " style=" background: #058af0" [routerLink]="['/supplies/edit', sup.id]"><i
+              class="far fa-edit"></i>
+            </button>
+          </td>
+          <td style="text-align: center">
+            <button (click)="getSuppliesDelete(sup)" type="button" class=" btn btn-danger "
+                    data-toggle="modal" data-target="#modalDelete"><i class="far fa-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <div style="text-align: center" *ngIf="errMessage">
+        <h2 style="color: red">{{errMessage}}</h2>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-9">
+        </div>
+        <div class="col-lg-3">
+          <nav aria-label="..." *ngIf="!errMessage" style="float: right">
+            <ul class="pagination">
+              <li class="page-item">
+                <button class="page-link" *ngIf="page > 0" (click)="previousPage()">Trước</button>
+              </li>
+              <li class="page-item active" aria-current="page">
+                <button class="page-link" *ngIf="page < 2 && page == 0" [value]="0" #page1
+                        (click)="setPage(page1.value)">1
+                </button>
+              </li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page < 2 && page != 0" [value]="0" #page2
+                        (click)="setPage(page2.value)">1
+                </button>
+              </li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page < 2 && page == 0 && pageSupplies.totalPages > 1" [value]="1" #page3
+                        (click)="setPage(page3.value)">2
+                </button>
+              </li>
+              <li class="page-item active" aria-current="page">
+                <button class="page-link" *ngIf="page < 2 && page != 0 && pageSupplies.totalPages > 1" [value]="1" #page4
+                        (click)="setPage(page4.value)">2
+                </button>
+              </li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page < 2 && pageSupplies.totalPages > 3" [value]="2" #page5 (click)="setPage(page5.value)">3</button>
+              </li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page > 1" [value]="page - 1" #page6
+                        (click)="setPage(page6.value)">{{page}}</button>
+              </li>
+              <li class="page-item active" aria-current="page">
+                <button class="page-link" *ngIf="page > 1" [value]="page" #page7
+                        (click)="setPage(page7.value)">{{page + 1}}</button>
+              </li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page < (pageSupplies.totalPages - 2) && page > 1" [value]="page + 1"
+                        #page8 (click)="setPage(page8.value)">{{page + 2}}</button>
+              </li>
+
+              <li class="page-item"><p class="page-link" *ngIf="page < pageSupplies.totalPages -3 ">...</p></li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page < pageSupplies.totalPages - 1 && pageSupplies.totalPages > 2"
+                        [value]="pageSupplies.totalPages - 1" #page9
+                        (click)="setPage(page9.value)">{{pageSupplies.totalPages}}</button>
+              </li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page + 1 < pageSupplies.totalPages" (click)="nextPage()">Sau</button>
+              </li>
+            </ul>
+          </nav>
+          <!--          <nav aria-label="..." *ngIf="!errMessage">-->
+          <!--            <ul class="pagination">-->
+          <!--              <li class="page-item">-->
+          <!--                <button class="page-link" *ngIf="page > 0" (click)="previousPage()">Trước</button>-->
+          <!--              </li>-->
+          <!--              <li class="page-item"><p class="page-link">{{page + 1}}/{{pageSupplies.totalPages}}</p></li>-->
+          <!--              <li class="page-item">-->
+          <!--                <button class="page-link" *ngIf="page + 1 < pageSupplies.totalPages" (click)="nextPage()">Sau</button>-->
+          <!--              </li>-->
+          <!--            </ul>-->
+          <!--          </nav>-->
+        </div>
+      </div>
+      <!--    </div>-->
+
+      <div style="text-align: center ; margin: 10px 0px 10px 0px ">
+        <button class=" btn btn-secondary" style="text-align: center" routerLink="/system">Quay lại</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal Delete -->
+<div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger">Xoá vật tư</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Bạn có muốn xoá vật tư có tên vật tư là {{nameDel}} và mã vật tư là {{codeDel}} này?
+      </div>
+      <div class="modal-footer">
+        <button (click)="deleteSupplies()" data-dismiss="modal" type="button" class="btn btn-danger mr-lg-3">Xoá
+        </button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+      </div>
+    </div>
+  </div>
+</div>

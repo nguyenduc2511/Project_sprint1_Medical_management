@@ -1,0 +1,103 @@
+<div class="row" style="padding-left: 0;left: 0">
+  <div class="col-9">
+    <div class="row" style="margin-top: 10px">
+      <div class="col-4">
+        <img src="{{supplies.image}}" height="100%" width="100%"/>
+      </div>
+      <div class="col-8" style="font-size: 20px">
+        <h2 style="color: green"><strong>{{supplies.name}}</strong></h2>
+        <p>{{supplies.introduce}}</p>
+        <span style="font-size: 30px;color: dodgerblue">
+          <a target="_blank" href="https://www.facebook.com"><i class="fab fa-facebook-f icon" ></i></a>
+          <a target="_blank" href="https://www.twitter.com"><i style="margin-left: 10px" class="fab fa-twitter icon"></i></a>
+          <a target="_blank" href="https://www.google.com"><i style="margin-left: 10px" class="fab fa-google icon"></i></a>
+          <a target="_blank" href="https://www.gmail.com"><i style="margin-left: 10px" class="fas fa-envelope-square icon"></i></a>
+          <a target="_blank" href="https://www.linkedin.com"><i style="margin-left: 10px" class="fab fa-linkedin-in icon"></i></a>
+                </span><br><br>
+        <a (click)="addToCart()" class="btn btn-primary btn-block"
+           style="text-decoration: none; font-size: 20px;display: inline"><i class="fas fa-cart-plus"></i>
+          Thêm vào giỏ hàng </a><br>
+        <a routerLink="/home/list"  class="btn btn-secondary"
+           style="text-decoration: none; font-size: 20px; margin-top: 10px">
+          Quay lại </a>
+
+      </div>
+    </div>
+    <br>
+    <div class="row" style="vertical-align: middle">
+      <div class="col-2" style="margin-left: 5px">
+        <div style="background: green;text-align: center;color: white; border-radius: 15px"><span style="font-size: 20px">MÔ TẢ</span></div>
+      </div>
+      <div class="col-10"></div>
+    </div>
+    <div class="row" style="background-color: lightcyan; margin-top: 4px">
+      <div class="col-12">
+        <p style="font-size: 20px;font-weight: bold">* Giới thiệu:</p>
+        <p>{{supplies.introduce}}</p>
+        <p style="font-size: 20px;font-weight: bold">* Thông tin kĩ thuật:</p>
+        <p>{{supplies.technicalInformation}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3" style="right: 0px;background: whitesmoke;">
+    <div class="row" style=" height: 50px;text-align: center">
+      <div class="col-lg-12 mt-lg-3"><strong style="font-size: 35px">Sản phẩm nổi bật</strong></div>
+    </div>
+    <div class="row container-fluid align-items-center">
+      <div class="col-4">
+        <img  (click)="moveToDetail(21)"  src="https://i.imgur.com/G41pwGs.jpg"
+              alt="" style="width:80px">
+      </div>
+      <div class="col-8 text-center">
+        <a  routerLink="home/detail/21"><p>Máy tạo Oxi gia đình</p></a>
+      </div>
+
+    </div>
+    <br>
+
+    <div class="row container-fluid align-items-center">
+      <div class="col-4">
+        <img  (click)="moveToDetail(11)" src="https://salt.tikicdn.com/cache/400x400/ts/product/3b/65/e8/ce282db9dcf973abb8ee967732ddf45f.jpg.webp"
+              alt="" style="width:80px">
+      </div>
+      <div class="col-8 text-center">
+        <a  routerLink="home/detail/11">  <p>Khẩu trang 4D</p></a>
+      </div>
+
+    </div>
+    <br>
+
+    <div   class="row container-fluid align-items-center">
+      <div class="col-4">
+        <img (click)="moveToDetail(13)" src="https://images.fpt.shop/unsafe/fit-in/600x600/filters:quality(90):fill(white)/nhathuoclongchau.com/images/product/2021/07/00009723-berocca-7737-60e3_large.jpg"
+             alt="" style="width:80px">
+      </div>
+      <div class="col-8 text-center">
+        <a  routerLink="home/detail/13">  <p>Viên Sủi Berocca</p></a>
+      </div>
+
+    </div>
+    <br>
+
+    <!--    <div class="row container-fluid align-items-center">-->
+    <!--      <div class="col-4">-->
+    <!--        <img src="https://vn-live-05.slatic.net/p/a76ac7bb11fa4b8e5b64a942110ad6fb.jpg_720x720q80.jpg_.webp"-->
+    <!--             alt="" style="width:80px">-->
+    <!--      </div>-->
+    <!--      <div class="col-8 text-center">-->
+    <!--        <p>Khẩu trang siêu kháng khuẩn</p>-->
+    <!--      </div>-->
+
+    <!--    </div>-->
+    <!--    <br>-->
+    <!--    <div class="row container-fluid align-items-center">-->
+    <!--      <div class="col-4">-->
+    <!--        <img src="http://bignanotech.com.vn/uploads/Product/BIGNANOTECH/mang_loc_khang_khuan/manglocmeltblown-02.jpg"-->
+    <!--             alt="" style="width:80px">-->
+    <!--      </div>-->
+    <!--      <div class="col-8 text-center">-->
+    <!--        <p>Vải lọc kháng khuẩn</p>-->
+    <!--      </div>-->
+    <!--    </div>-->
+  </div>
+</div>

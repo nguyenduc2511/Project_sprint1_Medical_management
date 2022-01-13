@@ -1,0 +1,164 @@
+<div class="container-fluid"
+     style="background-image: url(https://hoaidoan.vn/wp-content/uploads/2021/03/background-dep-5.png); background-size: cover; padding: 0">
+  <div class="row">
+    <div class="col-lg-2">
+      <app-left-side-bar></app-left-side-bar>
+    </div>
+    <div class="col-lg-10">
+      <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+          <form [formGroup]="suppliesEditForm" (ngSubmit)="editSupplies()">
+            <h2 class="text-center mt-3">Chỉnh sửa vật tư</h2>
+            <div class="form-group row mt-2">
+              <div class="col-lg-3">
+                <label for="ma-vat-tu" >Mã vật tư <span style="color: red">(*)</span></label>
+              </div>
+              <div class="col-lg-9">
+                <input type="text" id="ma-vat-tu"  disabled class="form-control" formControlName="code">
+              </div>
+            </div>
+            <div class="form-group row ">
+              <div class="col-lg-3">
+                <label for="ten-vat-tu" >Tên vật tư <span style="color: red">(*)</span></label>
+              </div>
+              <div class="col-lg-9">
+                <input type="text" id="ten-vat-tu" class="form-control" formControlName="name">
+                <div *ngIf="!name.valid && (name.dirty || name.touched)">
+                  <div style="color:red" [hidden]="!name.errors.required">Vui lòng nhâp tên vật tư.</div>
+                  <div style="color:red" [hidden]="!name.errors.minlength">Tên vật tư chứ ít nhất 5 ký tự.</div>
+                  <div style="color:red" [hidden]="!name.errors.maxlength">Tên  vật tư chứa tối đa 50 ký tự.</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row ">
+              <div class="col-lg-3">
+                <label for="loai-vat-tu" >Loại vật tư<span style="color: red">(*)</span></label>
+              </div>
+              <div class="col-lg-9">
+                <select name="" id="loai-vat-tu" class="form-control" formControlName="suppliesType" [compareWith]="compareSuppliesType">
+                  <option selected [value]="null" disabled>Chọn danh mục sản phẩm</option>
+                  <option *ngFor="let s of suppliesTypes" [ngValue]="s">{{s.name}}</option>
+                </select>
+                <div *ngIf="!suppliesType.valid && (suppliesType.dirty || suppliesType.touched)">
+                  <div style="color: red" [hidden]="!suppliesType.errors.required">Vui lòng chọn loại vật tư</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row ">
+              <div class="col-lg-3">
+                <label for="gia-thanh" >Giá thành<span style="color: red">(*)</span></label>
+              </div>
+              <div class="col-lg-9">
+                <input type="text" min="0" [(ngModel)]="priceBinding" id="gia-thanh" class="form-control" formControlName="price">
+                <small *ngIf="priceBinding">
+                  {{priceBinding |number}} VND
+                </small>
+                <div *ngIf="!price.valid && (price.dirty|| price.touched)">
+                  <div style="color: red" [hidden]="!price.errors.required">
+                    Vui lòng nhập giá thành.
+                  </div>
+                  <div style="color: red" [hidden]="!price.errors.min">
+                    Giá thành có giá trị nhỏ nhất là 0.
+                  </div>
+                  <div style="color: red" [hidden]="!price.errors.pattern">
+                    Giá thành phải dương.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row ">
+              <div class="col-lg-3">
+                <label for="ngay-san-xuat" >Ngày sản xuất <span style="color: red">(*)</span></label>
+              </div>
+              <div class="col-lg-9">
+                <input type="date" id="ngay-san-xuat" class="form-control" formControlName="productionDate">
+                <div *ngIf="!productionDate.valid && (productionDate.dirty || productionDate.touched)">
+                  <div style="color: red" [hidden]="!productionDate.errors.required">Vui lòng nhập ngày sản xuất.</div>
+                  <div style="color: red" [hidden]="!productionDate.errors.pattern">Phải đúng định dạng: dd/MM/yyyy!</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row ">
+              <div class="col-lg-3">
+                <label for="han-su-dung" >Hạn sử dụng <span style="color: red">(*)</span></label>
+              </div>
+              <div class="col-lg-9">
+                <input type="date" id="han-su-dung" class="form-control" formControlName="expiryDate">
+                <div *ngIf="!expiryDate.valid && (expiryDate.dirty || expiryDate.touched)">
+                  <div style="color: red" [hidden]="!expiryDate.errors.required">Vui lòng nhập hạn sử dụng.</div>
+                  <div style="color: red" [hidden]="!expiryDate.errors.pattern">Phải đúng định dạng: dd/MM/yyyy!</div>
+                  <div style="color: red" [hidden]="!expiryDate.hasError('errorExpiryDate')">
+                    Hạn sử dụng phải sau ngày hiện tại 1 năm.</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-lg-3">
+                <label for="nha-cung-cap" >Nhà cung cấp<span style="color: red">(*)</span></label>
+              </div>
+              <div class="col-lg-9">
+                <select name="" id="nha-cung-cap" class="form-control" formControlName="producer" [compareWith]="compareProducer">
+                  <option selected disabled [value]="null">Chọn nhà cung cấp</option>
+                  <option *ngFor="let producer of producers" [ngValue]="producer">{{producer.name}}</option>
+                </select>
+                <div *ngIf="!producer.valid && (producer.dirty ||producer.touched)">
+                  <div style="color: red" [hidden]="!producer.errors.required">Vui lòng chọn nhà cung cấp.</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row ">
+              <div class="col-lg-3">
+                <label for="mo-ta" >Giới thiệu<span style="color: red">(*)</span></label>
+              </div>
+              <div class="col-lg-9">
+                <textarea id="mo-ta" class="form-control" rows="2" cols="40" formControlName="introduce"></textarea>
+                <div *ngIf="!introduce.valid && (introduce.dirty ||introduce.touched)">
+                  <div style="color: red" [hidden]="!introduce.errors.required">Vui lòng nhập phần giới thiệu.</div>
+                  <div style="color: red" [hidden]="!introduce.errors.minlength">Giới thiệu có ít nhất 5 ký tự</div>
+                  <div style="color: red" [hidden]="!introduce.errors.maxlength">Giới thiệu không vượt quá 500 ký tự</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row ">
+              <div class="col-lg-3">
+                <label for="thong-tin">Thông tin kỹ thuật<span style="color: red">(*)</span></label>
+              </div>
+              <div class="col-lg-9">
+                <textarea id="thong-tin" class="form-control" rows="2" cols="40"
+                      formControlName="technicalInformation"></textarea>
+                <div *ngIf="!technicalInformation.valid && (technicalInformation.dirty ||technicalInformation.touched)">
+                  <div style="color: red" [hidden]="!technicalInformation.errors.required">Vui lòng nhập Thông tin kỹ thuật.</div>
+                  <div style="color: red" [hidden]="!technicalInformation.errors.minlength">Thông tin kỹ thuật có ít nhất 5ký tự.</div>
+                  <div style="color: red" [hidden]="!technicalInformation.errors.maxlength">Thông tin kỹ thuật không vượt quá 500 ký tự</div>
+                </div>
+              </div>
+            </div>
+            <div class=" row form-group">
+              <label class="col-lg-3 col-form-label" for="avarta">Chọn ảnh</label>
+              <div class="col-lg-9">
+                <label>
+                  <img id="output" [src]="urlImage" width="150"
+                       height="150"/>
+                  <input type="file" accept="image/*" onchange="loadFile(event)"
+                         id="avarta" name="myfile"
+                         style="display:none" (change)="showPreview($event)">
+                </label>
+              </div>
+            </div>
+            <div class="form-group row mb-3">
+              <div class="col-lg-3"></div>
+              <div class="col-lg-9">
+                <button type="submit" class="btn btn-primary mr-lg-3" [disabled]="!suppliesEditForm.valid">Cập nhật
+                </button>
+                <button class="btn btn-secondary" type="button" routerLink="/supplies/list">Quay lại
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-lg-2"></div>
+      </div>
+    </div>
+  </div>
+</div>

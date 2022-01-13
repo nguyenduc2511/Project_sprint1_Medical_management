@@ -1,0 +1,154 @@
+<div class="container-fluid"
+     style="background-image: url(https://hoaidoan.vn/wp-content/uploads/2021/03/background-dep-5.png); background-size: cover; padding: 0">
+  <div class="row">
+    <div class="col-lg-2">
+      <app-left-side-bar></app-left-side-bar>
+    </div>
+    <div class="col-lg-10">
+      <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+          <h2 class="text-center mt-4">Thêm mới nhân viên</h2>
+          <form [formGroup]="employeeForm" (ngSubmit)="submit()">
+            <div class="form-group row mb-3">
+              <label class="col-lg-3 col-form-label" for="ma-nhan-vien">Mã nhân viên</label>
+              <div class="col-lg-9">
+                <input type="text" id="ma-nhan-vien" disabled class="form-control"
+                       formControlName="code"
+                       value="{{codeB}}">
+              </div>
+            </div>
+            <div class="form-group row mb-3 ">
+              <label class="col-lg-3 col-form-label" for="name">Họ và tên<span
+                style="color: red">(*)</span></label>
+              <div class="col-lg-9">
+                <input type="text" id="name" class="form-control" formControlName="name">
+                <div *ngIf="!name.valid && (name.dirty || name.touched)">
+                  <div style="color: red" [hidden]="!name.errors.required">Vui lòng nhập họ và tên.</div>
+                  <div style="color: red" [hidden]="!name.errors.pattern">Tên không được chứa kí tự số hoặc kí tự đặc biệt.</div>
+                  <div style="color: red" [hidden]="!name.errors.minlength">Tên tối thiểu có 2 kí tự.</div>
+                  <div style="color: red" [hidden]="!name.errors.maxlength">Tên tối đa có 30 kí tự.</div>
+                </div>
+                <div *ngIf="!checkerr">
+                  <div style="color: red" *ngFor="let s of errorDB">
+                    <div *ngIf="s.field == 'name' ">
+                      <div style="color: red">{{s.defaultMessage}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row mb-3 ">
+              <label class="col-lg-3 col-form-label" for="birthDay">Ngày sinh<span
+                style="color: red">(*)</span></label>
+              <div class="col-lg-9">
+                <input type="date" min="0" id="birthDay" class="form-control" formControlName="birthday">
+                <div *ngIf="!birthday.valid && (birthday.dirty|| birthday.touched)">
+                  <div style="color: red" [hidden]="!birthday.errors.required">
+                    Vui lòng nhập ngày sinh.
+                  </div>
+                  <div style="color: red" [hidden]="!birthday.errors.checkAge">
+                    Tuổi phải trên 18 và nhỏ hơn 60.
+                  </div>
+                </div>
+                <div *ngIf="!checkerr">
+                  <div style="color: red" *ngFor="let s of errorDB">
+                    <div *ngIf="s.field == 'birthday' ">
+                      <div style="color: red">{{s.defaultMessage}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row mb-3 ">
+              <label class="col-lg-3 col-form-label" for="gender">Giới tính<span
+                style="color: red">(*)</span></label>
+              <div class="col-lg-9">
+                <select name="" id="gender" class="form-control" formControlName="gender">
+                  <option value="" [disabled]="true">Chọn Giới tính</option>
+                  <option selected [value]=1>Nam</option>
+                  <option selected [value]=0>Nữ</option>
+                </select>
+                <div *ngIf="!gender.valid && (gender.dirty || gender.touched)">
+                  <div style="color: red" [hidden]="!gender.errors.required">Vui lòng chọn giới tính.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row mb-3 ">
+              <label class="col-lg-3 col-form-label" for="address">Địa chỉ<span
+                style="color: red">(*)</span></label>
+              <div class="col-lg-9">
+                <input type="text" id="address" class="form-control" formControlName="address">
+                <div *ngIf="!address.valid && (address.dirty || address.touched)">
+                  <div style="color: red" [hidden]="!address.errors.required">Vui lòng nhập địa chỉ.</div>
+                  <div style="color: red" [hidden]="!name.errors.minlength">Địa chỉ tối thiểu có 5 kí tự.</div>
+                  <div style="color: red" [hidden]="!name.errors.maxlength">Địa chỉ tối đa có 30 kí tự.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row mb-3">
+              <label class="col-lg-3 col-form-label" for="phone">Số điện thoại<span
+                style="color: red">(*)</span></label>
+              <div class="col-lg-9">
+                <input type="text" id="phone" class="form-control" formControlName="phone">
+                <div *ngIf="!phone.valid && (phone.dirty || phone.touched)">
+                  <div style="color: red" [hidden]="!phone.errors.required">Vui lòng nhập số điện thoại.</div>
+                  <div style="color: red" [hidden]="!phone.errors.pattern"> Số điện thoại phải đúng định dạng: 090xxxxxxx hoặc
+                    091xxxxxxx.
+                  </div>
+                </div>
+                <div *ngIf="!checkerr">
+                  <div style="color: red" *ngFor="let s of errorDB">
+                    <div *ngIf="s.field == 'phone' ">
+                      <div style="color: red">{{s.defaultMessage}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row mb-3 ">
+              <label class="col-lg-3 col-form-label" for="loai-vat-tu">Chức vụ<span
+                style="color: red">(*)</span></label>
+              <div class="col-lg-9">
+                <select name="" id="loai-vat-tu" class="form-control" formControlName="position">
+                  <option value="" [disabled]="true">Chọn chức vụ</option>
+                  <option *ngFor="let s of positionList" [ngValue]="s">{{s.name}}</option>
+                </select>
+                <div *ngIf="!position.valid && (position.dirty || position.touched)">
+                  <div style="color: red" [hidden]="!position.errors.required">Vui lòng chọn chức vụ.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row mb-3">
+              <label class="col-lg-3 col-form-label" for="avarta">Chọn ảnh avatar</label>
+              <div class="col-lg-9">
+                <label>
+                  <img id="output" src="https://i.imgur.com/7Vtlcpx.png" width="150"
+                       height="150"/>
+                  <input type="file" accept="image/*" onchange="loadFile(event)"
+                         id="avarta" name="myfile"
+                         style="display:none" (change)="showPreview($event)">
+                </label>
+              </div>
+            </div>
+            <div class="form-group row mb-3">
+              <div class="col-lg-3"></div>
+              <div class="col-lg-9">
+                <button type="submit" class="btn btn-primary mr-lg-3" [disabled]="!employeeForm.valid"
+                        data-toggle="modal" data-target="#staticBackdrop">Thêm mới
+                </button>
+                <button type="button" class="btn btn-secondary" routerLink="/employee/list">Quay lại</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-lg-2"></div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,134 @@
+<!--Creator: PhuocPD-->
+<div class="container-fluid"
+     style="background-image: url(https://hoaidoan.vn/wp-content/uploads/2021/03/background-dep-5.png); background-size: cover; padding: 0">
+  <div class="row">
+    <div class="col-lg-2">
+      <app-left-side-bar></app-left-side-bar>
+    </div>
+    <div class="col-lg-10">
+      <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+          <h2 class="text-center mb-3" *ngIf="h2RegisterStatus">Tạo mới tài khoản</h2>
+          <h2 class="text-center mb-3" *ngIf="h2UpdateStatus">Cập nhật tài khoản</h2>
+          <div class="form-group row mb-3">
+            <div class="col-lg-3">
+              <label for="employeeId" class="col-form-label">Mã nhân viên<span
+                style="color: red">(*)</span></label>
+            </div>
+            <div class="col-lg-9">
+              <input type="text" class="form-control" id="employeeId" [(ngModel)]="codeInput">
+            </div>
+          </div>
+          <div class="form-group row mb-3">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-9">
+              <button type="submit" class="btn btn-primary mr-lg-2" *ngIf="buttonCheckStatus" (click)="checkCode()">Kiểm
+                tra
+              </button>
+              <button type="submit" class="btn btn-secondary" *ngIf="buttonCheckStatus" routerLink="/system">Quay lại
+              </button>
+
+            </div>
+          </div>
+          <form *ngIf="formStatus" [formGroup]="registerForm">
+            <div class="form-group row mb-3">
+              <div class="col-lg-3">
+                <label for="username" class="col-form-label">Tên tài khoản<span
+                  style="color: red">(*)</span></label>
+              </div>
+              <div class="col-lg-9">
+                <input type="text" class="form-control" id="username" formControlName="username"
+                       aria-describedby="usernameError" [readOnly]="disabledStatus">
+                <div id="usernameError" class="form-text text-danger"
+                     *ngIf="!username.valid && (username.dirty || username.touched)">
+                  <div [hidden]="!username.errors.required">
+                    Vui lòng nhập Tên đăng nhập.
+                  </div>
+                  <div [hidden]="!username.errors.minlength">
+                    Tên đăng nhập phải có ít nhất 6 ký tự.
+                  </div>
+                  <div [hidden]="!username.errors.maxlength">
+                    Tên đăng nhập không vượt quá 20 ký tự.
+                  </div>
+                  <div [hidden]="!username.errors.pattern">
+                    Tên đăng nhập phải bao gồm chữ và số.
+                  </div>
+                </div>
+                <div *ngIf="validateUsernameExistMessage" class="form-text text-danger">
+                  {{validateUsernameExistMessage}}
+                </div>
+                <div *ngIf="validateUsernameMessage" class="form-text text-danger">
+                  {{validateUsernameMessage}}
+                </div>
+              </div>
+            </div>
+            <div class="form-group row mb-3">
+              <div class="col-lg-3">
+                <label for="password" class="col-form-label">Mật khẩu<span
+                  style="color: red">(*)</span></label>
+              </div>
+              <div class="col-lg-9">
+                <input type="password" class="form-control" id="password" formControlName="password"
+                       aria-describedby="passwordError">
+                <div id="passwordError" class="form-text text-danger"
+                     *ngIf="!password.valid && (password.dirty || password.touched)">
+                  <div [hidden]="!password.errors.required">
+                    Vui lòng nhập Mật khẩu.
+                  </div>
+                  <div [hidden]="!password.errors.minlength">
+                    Mật khẩu phải có ít nhất 6 ký tự.
+                  </div>
+                  <div [hidden]="!password.errors.maxlength">
+                    Mật khẩu không vượt quá 20 ký tự.
+                  </div>
+                  <div [hidden]="!password.errors.pattern">
+                    Mật khẩu phải bao gồm chữ hoặc số, không bao gồm các ký tự đặc biệt.
+                  </div>
+                </div>
+                <div *ngIf="validatePasswordMessage" class="form-text text-danger">
+                  {{validatePasswordMessage}}
+                </div>
+              </div>
+
+            </div>
+            <div class="form-group row mb-3">
+              <div class="col-lg-3">
+                <label for="role" class="col-form-label">Quyền<span
+                  style="color: red">(*)</span></label>
+              </div>
+              <div class="col-lg-9">
+                <select class="custom-select" id="role" aria-describedby="roleError" formControlName="role"
+                        [attr.disabled]="disabledStatus?true:null">
+                  <option value="" selected>Chọn quyền</option>
+                  <option value="admin">Admin</option>
+                  <option value="user">User</option>
+                </select>
+                <div id="roleError" class="form-text text-danger"
+                     *ngIf="!role.valid && (role.dirty || role.touched)">
+                  <div [hidden]="!role.errors.required">
+                    Vui lòng nhập Quyền.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row mb-3">
+              <div class="col-lg-3"></div>
+              <div class="col-lg-9">
+                <button type="submit" class="btn btn-primary mr-lg-3" *ngIf="buttonRegisterStatus"
+                        [disabled]="registerForm.invalid" (click)="register()">Đăng ký
+                </button>
+                <button type="submit" class="btn btn-primary mr-lg-3" *ngIf="buttonUpdateStatus"
+                        [disabled]="registerForm.invalid"
+                        (click)="update()">Cập nhật
+                </button>
+                <button type="submit" class="btn btn-secondary" routerLink="/system">Quay lại</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-lg-2"></div>
+      </div>
+    </div>
+  </div>
+</div>

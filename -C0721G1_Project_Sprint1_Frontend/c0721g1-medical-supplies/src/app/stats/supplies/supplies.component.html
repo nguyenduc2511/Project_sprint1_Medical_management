@@ -1,0 +1,102 @@
+<div class="container-fluid"
+     style="background-image: url(https://hoaidoan.vn/wp-content/uploads/2021/03/background-dep-5.png); background-size: cover; padding: 0">
+  <div class="row">
+    <div class="col-lg-2">
+      <app-left-side-bar></app-left-side-bar>
+    </div>
+    <div class="col-lg-10">
+      <h2 class="text-center" style="margin:20px;">Thống kê Vật Tư</h2>
+      <!--    search box-->
+      <div *ngIf="!check" class="row">
+        <div class="col-6"></div>
+        <div class="col-6">
+          <div class="row">
+            <div class="col-xs-12 col-12 col-md-4 form-group mb-3">
+              <input placeholder="Chọn ngày" class="form-control"  #drp="bsDaterangepicker" bsDaterangepicker [(ngModel)]="bsRangeValue">
+            </div>
+            <div class="col-xs-12 col-12 col-md-3 form-group mb-3">
+              <button class="btn btn-success" style="background: #058af0" (click)="search()" [attr.aria-expanded]="drp.isOpen" type="button">Tìm kiếm</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--chart js-->
+
+      <div *ngIf="!check" class="row" style="margin-top:50px">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+          <div>
+            <canvas id="myChart"></canvas>
+          </div>
+        </div>
+        <div class="col-lg-2"></div>
+      </div>
+      <div class="row">
+        <!--        <div class="col-lg-12">-->
+
+        <div class="col-lg-12 text-center">
+          <div style="width: 60px; height: 15px; background-color: blue; text-align:center; display:inline"><span style="color: white">Số lượng tồn kho</span></div>
+          <div style="width: 60px; height: 15px; margin-left: 15px; background-color: red; text-align:center; display:inline"><span style="color: white">Số lượng nhập</span></div>
+          <div style="width: 60px; height: 15px; margin-left: 15px; background-color: green; text-align:center; display:inline"><span style="color: white">Số lượng bán</span></div>
+          <div style="width: 60px; height: 15px; margin-left: 15px; background-color: rgb(255, 205, 86); text-align:center; display:inline"><span style="color: white">Số lượng Vật tư hư hỏng và hết hạn</span></div>
+        </div>
+      </div>
+      <div class="row">
+        <div *ngIf="!check" class="col-lg-12 text-center" style="font-weight: bold;margin-bottom:60px">
+          Biểu đồ thống kê chi tiết hoạt động kinh doanh. (Đơn vị: Hộp)
+        </div>
+      </div>
+
+      <h2 *ngIf="check" class="text-center text-danger" style="margin:30px">Dữ liệu không tồn tại trong khoảng thời gian
+        này</h2>
+
+      <div class="row">
+        <div class="col-lg-12">
+          <table *ngIf="!check" class="table table-hover table-striped container">
+            <thead>
+            <tr class="text-center">
+              <th>Mã Vật tư</th>
+              <th>Tên Vật tư</th>
+              <th style="color: red">Số lượng nhập</th>
+              <th style="color: green">Số lượng bán</th>
+              <th style="color: blue">Số lượng tồn kho</th>
+              <th style="color: rgb(255, 205, 86)">Số lượng Vật tư hư hỏng và hết hạn</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let items of suppliesArr  | paginate: { itemsPerPage: 3, currentPage: page }"
+                class="text-center">
+              <td>{{items.code}}</td>
+              <td>{{items.name}}</td>
+              <td>{{items.import_quantity}} Hộp</td>
+              <td>{{items.quantity}} Hộp</td>
+              <td>{{items.normal_supplies}} Hộp</td>
+              <td>{{items.another}} Hộp</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-8"></div>
+        <div class="col-lg-4">
+          <pagination-controls previousLabel="Trước" nextLabel="Sau"
+                               responsive="true" *ngIf="!check" (pageChange)="page = $event"></pagination-controls>
+        </div>
+      </div>
+
+      <div class="row" style="margin:30px">
+        <div class="col-lg-12 text-center">
+          <div class="print">
+            <button  (click)="onPrint()" class="fas fa-print btn btn-primary"
+                     style="width: 80px;height: 36px; margin-right: 15px;display: inline">In
+            </button>
+            <button type="button" class="btn btn-secondary" routerLink="/system">Quay lại</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
