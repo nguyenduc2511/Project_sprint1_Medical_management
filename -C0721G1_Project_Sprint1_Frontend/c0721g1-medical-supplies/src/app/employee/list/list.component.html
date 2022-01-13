@@ -1,0 +1,184 @@
+<div class="container-fluid"
+     style="background-image: url(https://hoaidoan.vn/wp-content/uploads/2021/03/background-dep-5.png); background-size: cover; padding: 0">
+  <div class="row">
+    <div class="col-lg-2">
+      <app-left-side-bar></app-left-side-bar>
+    </div>
+    <div class="col-lg-10" style="padding-left: 0">
+      <nav class="navbar navbar-light">
+        <a class="btn">
+          <button class="btn btn-success " style="background: #058af0" routerLink="/employee/create">Thêm mới nhân
+            viên
+          </button>
+        </a>
+        <form class="form-inline" [formGroup]="searchForm">
+          <input class="form-control mr-sm-2" type="search" placeholder="Mã nhân viên"
+                 aria-label="Search" formControlName="code">
+          <input class="form-control mr-sm-2" type="search" placeholder="Tên nhân viên"
+                 aria-label="Search" formControlName="name">
+          <select class="custom-select" aria-describedby="validationServer04Feedback" formControlName="positionId">
+            <option selected value="">Chức vụ</option>
+            <option *ngFor="let position of positionList" [ngValue]="position.id">{{position.name}}</option>
+          </select>
+          <button class="btn btn-success " style="background: #058af0; margin-left: 7px"
+                  type="submit" (click)="searchEmployee()">Tìm kiếm
+          </button>
+        </form>
+      </nav>
+
+      <h2 style="text-align: center">Danh sách nhân viên</h2>
+
+      <table class="table table-hover table-striped">
+        <thead>
+        <tr class="table-primary text-center">
+          <th scope="col">#</th>
+          <th scope="col">Mã nhân viên</th>
+          <th scope="col">Họ tên</th>
+          <th scope="col">Ngày sinh</th>
+          <th scope="col">Giới tính</th>
+          <th scope="col">Địa chỉ</th>
+          <th scope="col">Số điện thoại</th>
+          <th scope="col">Tên tài khoản</th>
+          <th scope="col">Chức vụ</th>
+          <th scope="col">Chi tiết</th>
+          <th scope="col">Sửa</th>
+          <th scope="col">Xóa</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let emp of employeeList index as i" class="text-center">
+          <td>{{i + 1}}</td>
+          <td>{{emp.code}}</td>
+          <td [innerHTML]="emp.name | truncateText: 15" title="{{emp.name}}"></td>
+          <td>{{emp.birthday | date: 'dd-MM-yyyy'}}</td>
+          <td *ngIf="emp.gender==1">Nam</td>
+          <td *ngIf="emp.gender==0">Nữ</td>
+          <td [innerHTML]="emp.address | truncateText: 15" title="{{emp.address}}"></td>
+          <td>{{emp.phone}}</td>
+          <td><p *ngIf="emp.user">{{emp.user.username}}</p></td>
+          <td>{{emp.position.name}}</td>
+          <td style="text-align: center">
+            <button class=" btn-edit btn " style="background: #058af0" routerLink="/employee/detail/{{emp.id}}"><i
+              class="fas fa-info-circle"></i>
+            </button>
+          </td>
+          <td style="text-align: center">
+            <button class=" btn-edit btn" style="background: #058af0" [routerLink]="['/employee/edit/', emp.id]"><i
+              class="far fa-edit"></i>
+            </button>
+          </td>
+          <td style="text-align: center">
+            <button type="button" class=" btn btn-danger "
+                    data-toggle="modal" data-target="#modalDelete" (click)="getEmployeeDelete(emp)"><i
+              class="far fa-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+
+        </tbody>
+      </table>
+      <div style="text-align: center" *ngIf="errMessage">
+        <h2 style="color: red">{{errMessage}}</h2>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-9">
+        </div>
+        <div class="col-lg-3">
+          <nav aria-label="..." *ngIf="!errMessage" style="float: right">
+            <ul class="pagination">
+              <li class="page-item">
+                <button class="page-link" *ngIf="page > 0" (click)="previousPage()">Trước</button>
+              </li>
+              <li class="page-item active" aria-current="page">
+                <button class="page-link" *ngIf="page < 2 && page == 0" [value]="0" #page1
+                        (click)="setPage(page1.value)">1
+                </button>
+              </li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page < 2 && page != 0 " [value]="0" #page2
+                        (click)="setPage(page2.value)">1
+                </button>
+              </li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page < 2 && page == 0 && pageEmployee.totalPages > 1" [value]="1" #page3
+                        (click)="setPage(page3.value)">2
+                </button>
+              </li>
+              <li class="page-item active" aria-current="page">
+                <button class="page-link" *ngIf="page < 2 && page != 0 && pageEmployee.totalPages > 1" [value]="1" #page4
+                        (click)="setPage(page4.value)">2
+                </button>
+              </li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page < 2 && pageEmployee.totalPages > 3" [value]="2"
+                        #page5 (click)="setPage(page5.value)">3</button>
+              </li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page > 1" [value]="page - 1" #page6
+                        (click)="setPage(page6.value)">{{page}}</button>
+              </li>
+              <li class="page-item active" aria-current="page">
+                <button class="page-link" *ngIf="page > 1" [value]="page" #page7
+                        (click)="setPage(page7.value)">{{page + 1}}</button>
+              </li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page < (pageEmployee.totalPages - 2) && page > 1" [value]="page + 1"
+                        #page8 (click)="setPage(page8.value)">{{page + 2}}</button>
+              </li>
+
+              <li class="page-item"><p class="page-link" *ngIf="page <  pageEmployee.totalPages - 3 ">...</p></li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page < pageEmployee.totalPages - 1 && pageEmployee.totalPages > 2"
+                        [value]="pageEmployee.totalPages - 1" #page9
+                        (click)="setPage(page9.value)">{{pageEmployee.totalPages}}</button>
+              </li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page + 1 < pageEmployee.totalPages" (click)="nextPage()">Sau</button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <div style="text-align: center ; margin: 10px 0px 10px 0px ">
+        <button class=" btn btn-secondary" style="text-align: center" routerLink="/system">Quay lại</button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- Modal Delete -->
+  <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-danger">Xoá nhân viên</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Bạn có muốn xóa thông tin nhân viên này không?
+          <table>
+            <tr>
+              <td>Mã nhân viên:</td>
+              <td style="color: red">{{codeDelete}}</td>
+            </tr>
+            <tr>
+              <td>Tên nhân viên:</td>
+              <td style="color: red">{{nameDelete}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button data-dismiss="modal" type="button" class="btn btn-danger mr-lg-3" (click)="deleteEmployee()">Xoá
+          </button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,104 @@
+<div class="container-fluid" style="background-image: url(https://hoaidoan.vn/wp-content/uploads/2021/03/background-dep-5.png)" >
+  <div class="row">
+    <div class="col-12">
+      <h2 class="text-center">THANH TOÁN</h2>
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="col-2"></div>
+    <div class="col-8">
+      <br>
+      <form [formGroup]="customerForm" >
+        <table class="table" style="text-align: left">
+          <tr>
+            <td><h4 style="display: inline">Họ và tên<span style="color: red">(*)</span></h4>
+            </td>
+            <td><input type="text" class="form-control" formControlName="name">
+              <div *ngIf="!name.valid && (name.dirty ||name.touched)">
+                <div style="color:red" [hidden]="!name.errors.required">Tên không được để trống</div>
+                <div style="color:red" [hidden]="!name.hasError('errorName')">Họ và tên phải đúng định dạng (Không chứa chữ số)</div>
+                <div style="color:red" [hidden]="!name.errors.maxlength">Họ và tên phải nhỏ hơn 50 kí tự</div>
+              </div>
+            </td>
+
+          </tr>
+          <tr>
+            <td><h4 style="display: inline">Địa chỉ<span style="color: red">(*)</span></h4></td>
+            <td>
+              <input placeholder="Chọn tỉnh thành" class="form-control" style="font-size: 20px"
+                     formControlName="address" list="address" />
+              <datalist id="address">
+                <option *ngFor="let address of addressList" [ngValue]="address">{{address.name}}</option>
+              </datalist>
+              <!--            <select class="form-control" style="font-size: 20px" formControlName="address">-->
+              <!--              <option value="">Chọn tỉnh thành</option>-->
+              <!--              <option *ngFor="let address of addressList" [ngValue]="address">{{address.name}}</option>-->
+              <!--            </select>-->
+              <div *ngIf="!address.valid && (address.dirty ||address.touched)">
+                <div style="color:red" [hidden]="!address.errors.required">Vui lòng nhập địa chỉ</div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><h4 style="display: inline">Số điện thoại<span style="color: red">(*)</span></h4>
+            </td>
+            <td><input  type="text" class="form-control" formControlName="phone">
+              <div *ngIf="!phone.valid && (phone.dirty || phone.touched)">
+                <div style="color:red" [hidden]="!phone.errors.required">Số điện thoại không được để trống</div>
+                <div style="color:red" [hidden]="!phone.errors.pattern">Số điện thoại phải đúng định dạng ( 10 chữ số)
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><h4 style="display: inline">Email<span style="color: red">(*)</span></h4>
+            </td>
+            <td><input type="text" class="form-control" formControlName="email">
+              <div *ngIf="!email.valid && (email.dirty ||email.touched)">
+                <div style="color:red" [hidden]="!email.errors.required">Email không được để trống</div>
+                <div style="color:red" [hidden]="!email.errors.pattern">Sai định dạng email ( Ví dụ: abcxye@gmail.com,...)</div>
+                <div style="color:red" [hidden]="!email.errors.maxlength">Email phải nhỏ hơn 50 kí tự</div>
+              </div>
+            </td>
+          </tr>
+          <tr [hidden]="!flag">
+            <td></td>
+            <td ><div  #paypal></div></td>
+          </tr>
+        </table>
+        <h4>Tổng tiền:<span>{{total|number}}</span></h4>
+        <!--  button Quay lại giỏ hàng-->
+        <button (click)="moveToCartPage()" type="button" class="btn btn-secondary btn-lg">Quay lại giỏ hàng</button>
+        <!-- Button bật modal xác nhận đơn hàng -->
+        <button [disabled]="!customerForm.valid" style="margin-left: 10px" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modelId">
+          Thanh toán trực tiếp
+        </button>
+        <!--Button bật modal thanh toán online  -->
+        <button [disabled]="!customerForm.valid" style="margin-left: 10px" type="button" class="btn btn-success btn-lg" (click)="checkPaypal()">Thanh toán online</button>
+      </form>
+
+    </div>
+    <div class="col-2"></div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-primary">Thanh toán</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Đơn hàng của bạn tổng cộng là {{total|number}} VNĐ, bạn có muốn đặt đơn hàng này không ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        <button data-dismiss="modal" type="button" (click)="payment()" class="btn btn-success">Thanh toán</button>
+      </div>
+    </div>
+  </div>
+</div>

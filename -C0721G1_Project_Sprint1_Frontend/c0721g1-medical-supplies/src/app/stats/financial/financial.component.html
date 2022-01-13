@@ -1,0 +1,122 @@
+<div class="container-fluid"
+     style="background-image: url(https://hoaidoan.vn/wp-content/uploads/2021/03/background-dep-5.png); background-size: cover; padding: 0">
+  <div class="row">
+    <div class="col-lg-2">
+      <app-left-side-bar></app-left-side-bar>
+    </div>
+    <div class="col-lg-10">
+      <h2 style="margin:20px;font-size: xx-large" class="text-center" >THỐNG KÊ TÀI CHÍNH</h2>
+      <h2 class="text-center text-danger" style="margin:30px;font-size: xx-large">THỐNG KÊ DOANH THU</h2>
+
+      <!--    search Box-->
+      <div class="row" style="margin:50px;">
+        <div class="col-7"></div>
+        <div class="col-5">
+          <div class="row">
+            <div class="col-xs-12 col-12 col-md-4 form-group mb-3">
+              <input type="text"
+                     placeholder="Chọn ngày"
+                     class="form-control"
+                     #dp="bsDatepicker"
+                     bsDatepicker
+                     [(ngModel)]="bsValue">
+            </div>
+            <div>
+              <button class="btn btn-success" style="background: #058af0" (click)="search()" type="button">Tìm kiếm
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row text-center text-danger">
+        <div class="col-1"></div>
+        <div class="col-11">
+          <h2 *ngIf="check" class="text-center text-danger" style="margin:30px">Dữ liệu không tồn tại trong khoảng thời gian này</h2>
+        </div>
+      </div>
+
+      <div *ngIf="!check" class="row" style="margin:50px">
+        <div class="col-lg-6">
+          <!--    Table of Contents -->
+          <table class="table table-hover table-striped container text-center">
+            <thead>
+            <tr>
+              <th>Tổng Thu</th>
+              <th>Tổng chi</th>
+              <th>Lợi nhuận</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>{{this.revenue | number}} VND</td>
+              <td>{{this.totalCost | number}} VND</td>
+              <td>{{this.profit | number}} VND</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-lg-6 justify-content-center align-items-center">
+          <!--ChartJS 2-->
+          <div>
+            <canvas class="chart" id="myChart1"></canvas>
+          </div>
+          <div class="row">
+            <div class="col-12 text-center" style="font-weight: bold">
+              Biểu đồ thống kê thu chi. (Đơn vị: VND)
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2 *ngIf="!check" style="margin:30px;font-size: xx-large" class="text-center text-danger">THỐNG KÊ CHI TIẾT</h2>
+      <div *ngIf="!check" class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+          <canvas class="chart" id="myChart" width="100px" height="100px"></canvas>
+          <div class="row">
+            <div class="col-12 text-center" style="font-weight: bold;margin:15px">
+              Biểu đồ thống kê chi tiết hoạt động kinh doanh. (Đơn vị: VND)
+            </div>
+          </div>
+        </div>
+        <div class="col-3"></div>
+      </div>
+      <div *ngIf="!check" class="row">
+        <div class="col-12">
+          <!--    Table-->
+          <table class="table table-hover table-striped container text-center">
+            <thead>
+            <tr>
+              <th>Tiền bán hàng</th>
+              <th>Hoàn tiền từ nhà cung cấp</th>
+              <th>Tiền nhập hàng</th>
+              <th>Tiền trả hàng của khách</th>
+              <th>Tiền hủy hàng</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>{{income | number}} VND</td>
+              <td>{{financial.returnMoney | number}} VND</td>
+              <td>{{financial.importMoney | number}} VND</td>
+              <td>{{financial.refund | number}} VND</td>
+              <td>{{financial.cancelled | number}} VND</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div *ngIf="!check" class="row" style="margin:30px">
+        <div class="col-12 text-center">
+          <div class="print">
+            <button  (click)="onPrint()" class="fas fa-print btn btn-primary"
+                    style="width: 80px;height: 36px; margin-right: 15px;display: inline">In
+            </button>
+            <button type="button" class="btn btn-secondary" routerLink="/system">Quay lại</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

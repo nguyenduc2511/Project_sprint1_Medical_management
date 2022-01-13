@@ -1,0 +1,131 @@
+<div class="container-fluid"
+     style="background-image: url( https://hoaidoan.vn/wp-content/uploads/2021/03/background-dep-5.png); background-size: cover">
+  <div class="row">
+    <div class="col-lg-2" style="padding-left: 0px">
+      <!--      /* LEFT-SIDEBAR */-->
+      <div class="nav-side-menu"
+           style="background-image: url(https://i.imgur.com/LWAlhXc.jpg); width: 120%; padding-left: 0px">
+        <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+        <div class="menu-list">
+          <ul id="menu-content" class="menu-content collapse out">
+            <li data-toggle="collapse" data-target="#system" class="collapsed">
+              <a class="btn" (click)="search(1)" style="padding-left: 0px"><i
+                class="fas fa-assistive-listening-systems"></i> Đồ bảo hộ y tế<span style="text-align: right"
+                                                                                    class="arrow"></span></a>
+            </li>
+            <ul class="sub-menu collapse" id="system">
+              <li><a>Găng tay y tế</a></li>
+              <li><a>Khẩu trang y tế</a></li>
+              <li><a>Nguyên liệu vải không dệt</a></li>
+            </ul>
+            <li data-toggle="collapse" data-target="#category" class="collapsed">
+              <a style="padding-left: 0px" class="btn" (click)="search(2)"><i class="fas fa-toolbox"></i> Sản phẩm chức
+                năng <span class="arrow"></span></a>
+            </li>
+            <li data-toggle="collapse" data-target="#statistical" class="collapsed">
+              <a style="padding-left: 0px" class="btn" (click)="search(3)"><i class="fas fa-toolbox"></i> Thiết bị y tế
+                <span class="arrow"></span></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-10">
+      <div class="container d-flex justify-content-center mt-100">
+        <div class="row">
+          <div class="col-lg-12" *ngIf="errMessage">
+            <h2 style="color: red">{{errMessage}}</h2>
+          </div>
+          <div class="col-lg-4" style=" padding-right: 5%; padding-left: 5%" *ngFor="let item of suppliesList">
+            <div class="product-wrapper mb-45 text-center">
+              <div class="product-img"><a routerLink="/home/detail/{{item.id}}" data-abc="true"> <img
+                src="{{item.image}}" width="100%" height="100%"> </a>
+                <div style="text-align: center; font-size: large; padding-top: 5px">
+                  <span style="padding-bottom: 2%">{{item.name}}</span>
+                  <br>
+                  <span><strong>Đơn giá:</strong>  {{item.price | number}} (VNĐ) </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-9">
+        </div>
+        <div class="col-lg-3">
+
+          <nav aria-label="..." style="float: right">
+            <ul class="pagination">
+              <li class="page-item">
+                <button class="page-link" *ngIf="page > 0" (click)="previousPage()">Trước</button>
+              </li>
+              <li class="page-item active" aria-current="page">
+                <button class="page-link" *ngIf="page < 2 && page == 0" [value]="0" #page1
+                        (click)="setPage(page1.value)">1
+                </button>
+              </li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page < 2 && page != 0" [value]="0" #page2
+                        (click)="setPage(page2.value)">1
+                </button>
+              </li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page < 2 && page == 0 && totalPage > 1" [value]="1" #page3
+                        (click)="setPage(page3.value)">2
+                </button>
+              </li>
+              <li class="page-item active" aria-current="page">
+                <button class="page-link" *ngIf="page < 2 && page != 0 && totalPage > 1" [value]="1" #page4
+                        (click)="setPage(page4.value)">2
+                </button>
+              </li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page < 2 && totalPage > 3" [value]="2"
+                        #page5 (click)="setPage(page5.value)">3
+                </button>
+              </li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page > 1" [value]="page - 1" #page6
+                        (click)="setPage(page6.value)">{{page}}</button>
+              </li>
+              <li class="page-item active" aria-current="page">
+                <button class="page-link" *ngIf="page > 1" [value]="page" #page7
+                        (click)="setPage(page7.value)">{{page + 1}}</button>
+              </li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page < (totalPage - 2) && page > 1" [value]="page + 1"
+                        #page8 (click)="setPage(page8.value)">{{page + 2}}</button>
+              </li>
+
+              <li class="page-item"><p class="page-link" *ngIf="page <  totalPage - 3 ">...</p></li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page < totalPage - 1 && totalPage > 2"
+                        [value]="totalPage - 1" #page9
+                        (click)="setPage(page9.value)">{{totalPage}}</button>
+              </li>
+              <li class="page-item">
+                <button class="page-link" *ngIf="page + 1 < totalPage" (click)="nextPage()">Sau</button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+<!--<div class="row">-->
+<!--  <div class="col-lg-10"></div>-->
+<!--  <div class="col-lg-2">-->
+<!--    <nav aria-label="...">-->
+<!--      <ul class="pagination">-->
+<!--        <li class="page-item"><button class="page-link" (click)="previousPage()" *ngIf="page>0">Previous</button></li>-->
+<!--        <li class="page-item"><button class="page-link">{{page + 1}}/{{totalPage}}</button></li>-->
+<!--        <li class="page-item"><button class="page-link" (click)="nextPage()" *ngIf="page<totalPage-1">Next</button></li>-->
+<!--        <li class="page-item"><button class="page-link" (click)="lastPage()">Last Page</button></li>-->
+<!--      </ul>-->
+<!--    </nav>-->
+<!--  </div>-->
+<!--</div>-->

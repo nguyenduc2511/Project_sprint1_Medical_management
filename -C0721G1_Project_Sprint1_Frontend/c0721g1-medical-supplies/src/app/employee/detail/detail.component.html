@@ -1,0 +1,78 @@
+<div class="container-fluid"
+     style="background-image: url(https://hoaidoan.vn/wp-content/uploads/2021/03/background-dep-5.png); background-size: cover; padding: 0">
+  <div class="row">
+    <div class="col-lg-2">
+      <app-left-side-bar></app-left-side-bar>
+    </div>
+    <div class="col-lg-10">
+      <div class="row">
+        <div class="col-lg-4" >
+          <img *ngIf="employee.image; else elseBlock"  [src]=employee.image alt="" width="100%" height="350px" style="padding-top: 80px; padding-left: 80px">
+        </div>
+        <div class="col-lg-8" style="right: 18%;">
+          <h2 class=" text-center">
+            Thông tin cá nhân
+          </h2>
+          <table class=" table table-borderless mx-auto w-auto spacing-table">
+            <thead>
+            <tr>
+              <td>Tên tài khoản:</td>
+              <td *ngIf="employee.user">{{employee.user.username}} </td>
+            </tr>
+            <tr>
+              <td>Mật khẩu:</td>
+              <td *ngIf="employee.user">************************</td>
+            </tr>
+            <tr>
+              <td>Họ và tên:</td>
+              <td> {{employee.name}} </td>
+            </tr>
+            <tr>
+              <td>Địa chỉ:</td>
+              <td>{{employee.address}}</td>
+            </tr>
+            <tr>
+              <td>Giới tính:</td>
+              <td
+                [ngSwitch]="employee.gender">
+                <span *ngSwitchCase="0">Nữ</span>
+                <span *ngSwitchCase="1">Nam</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Số điện thoại:</td>
+              <td>{{employee.phone}}</td>
+            </tr>
+            <tr>
+              <td>Ngày sinh:</td>
+              <td>{{employee.birthday | date: 'dd-MM-yyyy'}}</td>
+            </tr>
+            <tr>
+              <td>Chức vụ:</td>
+              <td>{{employee.position.name}}</td>
+            </tr>
+            </thead>
+          </table>
+          <div class="row mb-3">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-9">
+              <button type="submit" class="btn btn-primary mr-lg-3" style="margin-left: 65px" [routerLink]="['/employee/change-password/', employee.id]">Đổi mật khẩu</button>
+              <button type="submit" class="btn btn-primary mr-lg-3" [routerLink]="['/employee/detail-edit/', id]">Cập nhập thông tin</button>
+              <button type="button" class="btn btn-secondary mr-lg-3" *ngIf="role === 'user'" routerLink="/system">Quay lại</button>
+              <button type="button" class="btn btn-secondary mr-lg-3" *ngIf="role === 'admin'" routerLink="/employee/list">Quay lại</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 text-center mt-3">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2"></div>
+  </div>
+</div>
+<ng-template #elseBlock>
+  <img src="https://i.imgur.com/7Vtlcpx.png" alt="" width="100%" height="350px" style="padding-top: 80px; padding-left: 80px">
+</ng-template>
